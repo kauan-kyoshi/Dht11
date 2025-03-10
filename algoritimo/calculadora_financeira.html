@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financeira</title>
+</head>
+
+<body>
+    <h2>Calculadora de Economia</h2>
+    <i>Escolha quantos anos deseja: </i>
+    <input type="text" name="" id="inp_calc">
+    <br><br>
+    <button onclick="calc()">Calcular</button>
+    <button onclick="limpar()">Zerar</button>
+    <div id="tela"></div>
+</body>
+<script>
+    var anos = 0
+    var res = 0
+    var gasto = 0
+    function calc() {
+        anos = Number(inp_calc.value)
+        res = 150000 * anos
+        gasto = 50000
+
+        tela.innerHTML += `Você irá gastar <b>R$${gasto}</b> para economizar <b>R$${res}</b> em <b>${anos} anos</b>. <br>`
+    }
+
+    function limpar() {
+        tela.innerHTML = ''
+    }
+</script>
+
+</html>
