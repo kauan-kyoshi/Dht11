@@ -28,9 +28,14 @@
     function calculateROI() {
         var name = (inp_name.value);
         var numRacks = Number(inp_numRacks.value);
+        // valor da instalção dos sensores em 1 rack
         var installCost = 1800;
+        // mensalidade do serviço de manutenção
         var monthlyCost = 2000;
-        var annualSavings = 150000;
+        // valor anual de perda por manutenção por rack
+        var annualSavings = 15000;
+        // Cálculo de redução de custo por rack da empresa
+        var annualSavingsvarempresa = annualSavings * numRacks
         
 
 
