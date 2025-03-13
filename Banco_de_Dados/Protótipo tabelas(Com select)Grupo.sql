@@ -5,30 +5,29 @@ use observer;
 -- Essa tabela armazenará informações sobre os clientes que utilizam o sistema de monitoramento.
 create table tb_clientes (
 	idCliente int primary key auto_increment, -- Identificador único do cliente (chave primária).
-    nome varchar(100), 						  -- Nome completo do cliente.
     email varchar(100) not null unique,               -- E-mail do cliente para contato.
     telefone varchar(15) not null,             -- Telefone do cliente.
     empresa varchar(100) not null,                     -- Nome da empresa do cliente (se aplicável).
     statusCad varchar(7)                      -- Status do cliente (ativo ou inativo).
     constraint chkCad 						  -- Constraint que faz a checagem.
     check (statusCad in ('Ativo', 'Inativo')),
-    cnpj varchar(20)
+    cnpj varchar(20) not null unique                         -- Número do CNPJ da empresa
 );
 
-insert into tb_clientes(nome,email,telefone,empresa,statusCad,cnpj) values
-('Felipe','melfexltda@example.com','11948557823','MelfexLtda','Ativo','5165161-6412'),
-('Vivian','sptech@sptech.school','11944568482','Sptech School','Inativo','4851-1551-1561'),
-('Maurício','itaucorp@example.com','8895415486','Itau','Ativo','263253-12376'),
-('Marcela','beyondyourdreams@example.com','22954791567','ifood','Ativo','456448-54851');
+insert into tb_clientes(email,telefone,empresa,statusCad,cnpj) values
+('melfexltda@example.com','11948557823','MelfexLtda','Ativo','12.345.678/0001-90'),
+('sptech@sptech.school','11944568482','Sptech School','Inativo','23.456.789/0001-01'),
+('itaucorp@example.com','8895415486','Itau','Ativo','34.567.890/0001-12'),
+('beyondyourdreams@example.com','22954791567','ifood','Ativo','45.678.901/0001-23');
 
 select * from tb_clientes;
 
 select concat('Seja bem-vindo ', empresa) as sejabemvindo from tb_clientes where idCliente = 4; -- select bemvindo
 
-select concat('Seus dados cadastrados são esses:
-Nome:', nome,' email: ', email,' telefone:', telefone,' empresa',empresa,' cnpj: ', cnpj) as dadoscadastro from tb_clientes where idCliente = 3;
+select concat('Seus dados cadastrados são esses
+email: ', email,' telefone:', telefone,' empresa',empresa,' cnpj: ', cnpj) as dadoscadastro from tb_clientes where idCliente = 3;
 
-update tb_clientes set nome = ''
+update tb_clientes set cnpj = ''
 	where idCliente = 0;
 update tb_clientes set email = ''
 	where idCliente = 0;
@@ -65,7 +64,7 @@ insert into tb_sensores(nomeSensor,localizacao,dataInstalacao,statusSensor) valu
 
 select * from tb_sensores;
 
-select * from tb_sensores where localizacao like 'Rack 3%';
+select * from tb_sensores where localizacao like 'Rack 1%';
 
 select concat('Seu ',nomeSensor,' que está localizado no ', localizacao,' está em ',statusSensor, ',a data de instalação desse sensor foi no ', dataInstalacao) as Status_sensor
 from tb_sensores where statusSensor = 'Ativo' and dataInstalacao < '2026-01-01 12:00:00';
@@ -124,4 +123,3 @@ select * from tb_alertas;
 
 select concat('O ', sensorAlerta01, ' passou ',tipoAlerta,' e registrou o valor de ',valor,' nesse horário ',dataAlerta, '.e o status do problema:', statusalerta) as alerta 
 from tb_alertas where statusAlerta = 'Pendente';
-
