@@ -11,21 +11,22 @@ create table tb_clientes (
     empresa varchar(100) not null,                     -- Nome da empresa do cliente (se aplicável).
     statusCad varchar(7)                      -- Status do cliente (ativo ou inativo).
     constraint chkCad 						  -- Constraint que faz a checagem.
-    check (statusCad in ('Ativo', 'Inativo'))
+    check (statusCad in ('Ativo', 'Inativo')),
+    cnpj varchar(20)
 );
 
-insert into tb_clientes(nome,email,telefone,empresa,statusCad) values
-('Felipe','melfexltda@example.com','11948557823','MelfexLtda','Ativo'),
-('Vivian','sptech@sptech.school','11944568482','Sptech School','Inativo'),
-('Maurício','itaucorp@example.com','8895415486','Itau','Ativo'),
-('Marcela','beyondyourdreams@example.com','22954791567','ifood','Ativo');
+insert into tb_clientes(nome,email,telefone,empresa,statusCad,cnpj) values
+('Felipe','melfexltda@example.com','11948557823','MelfexLtda','Ativo','5165161-6412'),
+('Vivian','sptech@sptech.school','11944568482','Sptech School','Inativo','4851-1551-1561'),
+('Maurício','itaucorp@example.com','8895415486','Itau','Ativo','263253-12376'),
+('Marcela','beyondyourdreams@example.com','22954791567','ifood','Ativo','456448-54851');
 
 select * from tb_clientes;
 
 select concat('Seja bem-vindo ', empresa) as sejabemvindo from tb_clientes where idCliente = 4; -- select bemvindo
 
 select concat('Seus dados cadastrados são esses:
-Nome:', nome,' email: ', email,' telefone:', telefone,' empresa',empresa) as dadoscadastro from tb_clientes where idCliente = 3;
+Nome:', nome,' email: ', email,' telefone:', telefone,' empresa',empresa,' cnpj: ', cnpj) as dadoscadastro from tb_clientes where idCliente = 3;
 
 update tb_clientes set nome = ''
 	where idCliente = 0;
