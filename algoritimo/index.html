@@ -1,153 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Financeira - ROI e Payback</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Financeira</title>
 </head>
+
 <body>
 
-<h1>Simulador Financeiro</h1>
-<br>
+  <h1>Simulador Financeiro</h1>
+  <h3>Veja os benefícios de contratar os nosso serviço:</h3>
+  <br>
 
-<p><b>Olá, qual o nome da sua empresa?</b></p>
-<input type="text" id="inp_name">
-<p><b>Número de Racks que serão instalados os sensores:</b></p>
-<input type="text" id="inp_numRacks">
-<br><br>
-<button onclick="calculateROI()">Calcular ROI e Payback</button>
-<br>
+  <p><b>Olá, qual o nome da sua empresa?</b></p>
+  <input type="text" id="inp_name">
+  <p><b>Quantos minutos seu serviço ficou parado(Downtime) ano passado?</b></p>
+  <input type="text" id="inp_parado">
+  <p><b>Qual a quantidade de rack's na sua empresa?</b></p>
+  <input type="text" id="inp_numRacks">
+  <p><b>Qual a quantidade de servidores por hack?</b></p>
+  <input type="text" name="" id="inp_server">
+  <br><br>
 
-<div id="tela">
-    
-</div>
+  <button onclick="calc()">Benefícios!!</button>
+  <br>
 
-<script>
-    
-    function calculateROI() {
-        var name = (inp_name.value);
-        var numRacks = Number(inp_numRacks.value);
-        // valor da instalção dos sensores em 1 rack
-        var installCost = 1800;
-        // mensalidade do serviço de manutenção
-        var monthlyCost = 2000;
-        // valor anual de perda por manutenção por rack
-        var annualSavings = 15000;
-        // Cálculo de redução de custo por rack da empresa
-        var annualSavingsvarempresa = annualSavings * numRacks
-        
+  <div id="tela">
+  </div>
+
+  <script>
+    function calc() {
+      // variaveis dos input's do usuario
+      var parado = Number(inp_parado.value)*15000; // oque o cliente deixaria de ganhar, caso nao estivesse com nosso serviço.
+      var nome = inp_name.value // nome da empresa
+      var server = Number(inp_server.value); // numero de servidores em um rack
+      var rack = Number(inp_numRacks.value);// numero de racks
+
+      //calculo do gasto de perder os servidores.
+      var tot_server = rack*server // total de servidores na empresa 
+      var preco_servidor = 80000; // o preço que o cliente gastaria em um servidor queimado
+      var gasto_tot_server = tot_server * preco_servidor
+      
+      //calc da instalação
+      var preco_sensor_por_rack = 1800;// oque o cliente irá pagar pela instalação de 6 sensores em um rack.
+      var custo_instalacao = rack * preco_sensor_por_rack; // valor pago pelo cliente pela instalação.
+
+      //calc da mensalidade e anuidade
+      var tot_ano = gasto_tot_server*0.5 // gasto anual
+      var mensal = tot_ano /12; // gasto mensal
+
+      // calc da economia
+      var economia = gasto_tot_server - tot_ano; // economia em um ano
 
 
+      tela.innerHTML = `
+      A empresa <b>${nome}</b> deixou de ganhar até <u>R$${parado}</u> por ter ficado <u>${Number(inp_parado.value)}</u> minutos em downtime(tempo com servidores parado).
+      <br><br>
+      a <b>${nome}</b> irá investir <u>R$${custo_instalacao}</u> com a instalação dos sensores. Assinando nosso serviço por <u>R$${mensal}/mês</u> a <b>${nome}</b> economizará <u>R$${economia}</u> em um ano.<br><br>
+      porque a <b>${nome}</b> paga <u>R$${tot_ano}/ano</u> para nao ter um gasto de <u>R$${gasto_tot_server}</u> com as reposições dos servidores
 
-        // Obtendo os valores dos inputs
 
-        // Cálculo do custo total de instalação
-        var totalInstallCost = installCost * numRacks;
-        
-        // Cálculo do custo operacional anual
-        var annualOperationalCost = monthlyCost * 12;
-        
-        // Cálculo dos benefícios líquidos anuais (economias - custos operacionais)
-        var netAnnualBenefits = annualSavings - annualOperationalCost;
+      <br><br>
+      <p> <h3>Você sabia? </h3>
 
-        // Cálculo do ROI
-        var ROI = (netAnnualBenefits / (totalInstallCost + annualOperationalCost)) * 100;
-
-        // Cálculo do Payback (em anos)
-        var payback = totalInstallCost / netAnnualBenefits;
-
-        if (payback < 1 ){
-            payback  = payback * 12 
-            tela.innerHTML = `
-            A sua empresa(<b>${name}</b>) terá um <i><u>ROI</u></i> (Retorno sobre Investimento) de :<b> ${ROI}%</b>
-            <br>
-            
-            E terá o <i><u>Payback</u></i>(tempo necessário para que os benefícios líquidos cubram o custo inicial do investimento.): <b>${payback} meses </b>
-            <p> <h3>Você sabia? </h3>
-
-    Interrupções de serviço (custando até R$ 15.000 por minuto em setores como e-commerce). <br><br>
-    
-    Redução da vida útil de hardware, gerando gastos com substituições prematuras (ex: servidores custam R$ 80.000+). <br><br>
-    
-    Falhas não detectadas, já que 60% das empresas ainda usam métodos manuais ou reativos (ABRADI, 2023). </p>
-    <br>
-    <p><u><b>Nós da Observer resolvemos o seu problema!!</b></u></p>
-    <br>
-            `;
-        }else {
-            tela.innerHTML = `
-            A sua empresa(<b>${name}</b>) terá um <i><u>ROI</u></i> (Retorno sobre Investimento) de :<b> ${ROI}%</b>
-            <br>
-            
-            E terá o <i><u>Payback</u></i>(tempo necessário para que os benefícios líquidos cubram o custo inicial do investimento.): <b>${payback} anos </b>
-        `;
-
-        }
-        
+      Interrupções de serviço (custando até R$ 15.000 por minuto em setores como e-commerce). <br><br>
+      
+      Redução da vida útil de hardware, gerando gastos com substituições prematuras (ex: servidores custam R$ 80.000+). <br><br>
+      
+      Falhas não detectadas, já que 60% das empresas ainda usam métodos manuais ou reativos (ABRADI, 2023). </p>
+      <br>
+      <p><u><b>Nós da Observer resolvemos o seu problema!!</b></u></p>
+      <br>
+      `
     }
-
-/* Para avaliar a viabilidade financeira do projeto de implementação de um sistema de monitoramento ambiental em salas de servidores, é essencial calcular o Retorno sobre Investimento (ROI). O ROI permite comparar os benefícios esperados com os custos envolvidos, auxiliando na tomada de decisões informadas.
-
- **1. Cálculo do ROI:**
-
-A fórmula básica para calcular o ROI é:
-
-\[ \text{ROI} = \left( \frac{\text{Benefícios Líquidos}}{\text{Custo Total do Investimento}} \right) \times 100 \]
-
-Onde:
-
-- **Benefícios Líquidos** = Economias anuais previstas com a redução de falhas e custos de reparo.
-- **Custo Total do Investimento** = Soma dos custos iniciais de instalação e dos custos operacionais anuais.
-
-**2. Estimativas de Custos:**
-
-- **Custo de Instalação:**
-  - R$ 1.800 por rack.
-  - Para um micro data center com 10 racks: R$ 1.800 x 10 = R$ 18.000.
-
-- **Custos Operacionais Anuais:**
-  - Mensalidade para manutenção do serviço: R$ 2.000.
-  - Anualmente: R$ 2.000 x 12 = R$ 24.000.
-
-- **Benefícios Anuais:**
-  - Economia estimada com reparos evitados: R$ 150.000.
-
-**3. Cálculo do ROI:**
-
-- **Benefícios Líquidos Anuais:** R$ 150.000 (economias com reparos) - R$ 24.000 (custos operacionais) = R$ 126.000.
-- **Custo Total do Investimento:** R$ 18.000 (instalação) + R$ 24.000 (custos operacionais anuais) = R$ 42.000 no primeiro ano.
-
-Aplicando a fórmula:
-
-\[ \text{ROI} = \left( \frac{R$ 126.000}{R$ 42.000} \right) \times 100 = 300\% \]
-
-**4. Período de Retorno do Investimento (Payback):**
-
-O período de payback é o tempo necessário para que os benefícios líquidos cubram o custo inicial do investimento.
-
-- **Investimento Inicial:** R$ 42.000.
-- **Benefícios Líquidos Anuais:** R$ 126.000.
-
-Com benefícios líquidos de R$ 126.000 por ano, o payback ocorre em aproximadamente:
-
-\[ \frac{R$ 42.000}{R$ 126.000 \, \text{por ano}} \approx 0,33 \, \text{anos} \, \text{ou} \, 4 \, \text{meses} \]
-
-**Conclusão:**
-
-Com um ROI de 300% e um payback estimado de 4 meses, o investimento no sistema de monitoramento ambiental é financeiramente vantajoso. Além das economias financeiras, a implementação do sistema reduzirá riscos operacionais e aumentará a confiabilidade dos serviços, contribuindo para a satisfação dos clientes e a reputação da empresa.
-
-**Referências:**
-https://zeittec.com.br/como-planejar-seu-data-center/?utm_source=chatgpt.com
-https://www.se.com/br/pt/work/solutions/for-business/data-centers-and-networks/dcim-software/?utm_source=chatgpt.com
-
-
-
-
-*/
-</script>
-
+  </script>
 </body>
 </html>
-
-
