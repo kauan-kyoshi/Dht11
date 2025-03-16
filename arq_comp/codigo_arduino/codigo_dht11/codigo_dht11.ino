@@ -7,7 +7,7 @@ DHT sensorDHT(PINO_SENSOR_DHT11, TIPO_SENSOR); // Define que o sensor está na p
 
 void setup() {
   Serial.begin(9600); // Inicia uma comunicação via serial na velocidade de 9600 baud rate
-  sensorDHT.begin();
+  sensorDHT.begin(); // Sincroniza a velocidade de comunicação conforme a definida no serial.begin
 }
 
 void loop() {
